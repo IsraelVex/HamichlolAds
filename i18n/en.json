@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamichlol"
+		]
+	},
+	"hamichlolads-desc": "Taboola ads in slots placed and controlled by the site",
+	"right-hamichlolads-exempt": "Browse without ads (they can be turned back on in preferences)",
+	"action-hamichlolads-exempt": "browse without ads",
+	"prefs-hamichlolads": "Ads",
+	"hamichlolads-pref-show": "Show me ads on the site",
+	"hamichlolads-pref-show-help": "Ads are hidden from users with special rights. Check this box to see them like any reader.",
+	"hamichlolads-policy": "About the ads on this site",
+	"hamichlolads-policypage": "Project:Ads policy"
+}

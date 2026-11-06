@@ -1,0 +1,89 @@
+@import 'mediawiki.skin.variables.less';
+
+/* Space around a filled slot. The policy icon's position depends on it. */
+@hm-ad-slot-margin: 1.5em;
+
+/*
+ * A slot takes space only once Taboola has filled it. An empty slot (still loading, or blocked
+ * by an ad blocker) gets no margin and doesn't clear floats, so it leaves no gap in the page.
+ */
+.hm-ad-slot:not( :empty ) {
+	clear: both;
+	margin: @hm-ad-slot-margin 0;
+}
+
+/*
+ * An automatic slot beside floats (an infobox or images) that leave it enough room takes that room,
+ * instead of clearing them (see fitToFloats in ext.hamichlolAds.js).
+ */
+.hm-ad-slot-beside {
+	display: flow-root;
+
+	&:not( :empty ) {
+		clear: none;
+	}
+}
+
+/* Main-page boxes have their own spacing. */
+.desktopmainpagecolumn .hm-ad-slot:not( :empty ),
+.mobilemainpagecolumn .hm-ad-slot:not( :empty ) {
+	margin: 0.5em 0 1em;
+}
+
+/*
+ * On desktop, the feed takes 70% of the content width, centred. In the mobile skin (Minerva) and
+ * in narrow windows it takes the full width.
+ */
+@media screen and ( min-width: @min-width-breakpoint-tablet ) {
+	body:not( .skin-minerva ) .hm-ad-feed {
+		width: 70%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+/*
+ * Taboola's full-width feed (mobile) extends 16px past the page padding on each side, but
+ * Minerva clips the area after the content to its padding, which cut off the feed's edges.
+ * Keep the feed within the padding. Taboola's own rule uses an ID selector, hence !important.
+ */
+.hm-ad-feed > .tbl-feed-full-width {
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+/*
+ * The info icon that links to the ads policy. It is shown only once Taboola has filled the feed,
+ * on Taboola's header row, at the start of the row (opposite Taboola's logo, which is on the left).
+ */
+.hm-ad-feed {
+	position: relative;
+	/* Keep the slot's margin inside the wrapper, so that the icon's offset can include it. */
+	display: flow-root;
+}
+
+.hm-ad-info {
+	display: none;
+}
+
+/* Taboola sizes its header row in px (27px high), so the icon is sized in px and centered on it. */
+.hm-ad-slot:not( :empty ) + .hm-ad-info {
+	.cdx-mixin-css-icon( @cdx-icon-info, @color-subtle, 20px );
+	display: block;
+	position: absolute;
+	top: calc( @hm-ad-slot-margin + 4px );
+	inset-inline-start: 6px;
+
+	&:hover,
+	&:focus {
+		background-color: @color-progressive--hover;
+	}
+}
+
+/* Nothing is printed: no slot, and no feed with its icon. */
+@media print {
+	.hm-ad-slot,
+	.hm-ad-feed {
+		display: none;
+	}
+}

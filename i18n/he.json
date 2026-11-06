@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamichlol"
+		]
+	},
+	"hamichlolads-desc": "פרסומות Taboola במשבצות שהאתר קובע ושולט בהן",
+	"right-hamichlolads-exempt": "גלישה בלי פרסומות (אפשר להפעיל אותן בהעדפות)",
+	"action-hamichlolads-exempt": "לגלוש בלי פרסומות",
+	"prefs-hamichlolads": "פרסומות",
+	"hamichlolads-pref-show": "הצג לי פרסומות באתר",
+	"hamichlolads-pref-show-help": "הפרסומות באתר מוסתרות מבעלי הרשאות. סימון התיבה יציג לך אותן כמו לכל קורא.",
+	"hamichlolads-policy": "מדיניות הפרסומות באתר",
+	"hamichlolads-policypage": "Project:מדיניות הפרסומות"
+}

@@ -1,0 +1,204 @@
+{
+	"name": "HamichlolAds",
+	"version": "1.0.0",
+	"author": [
+		"Hamichlol"
+	],
+	"url": "https://www.hamichlol.org.il",
+	"descriptionmsg": "hamichlolads-desc",
+	"license-name": "MIT",
+	"type": "other",
+	"requires": {
+		"MediaWiki": ">= 1.46.0"
+	},
+	"MessagesDirs": {
+		"HamichlolAds": [
+			"i18n"
+		]
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\HamichlolAds\\": "includes/"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\HamichlolAds\\HookHandler",
+			"services": [
+				"MainConfig",
+				"UserOptionsLookup"
+			]
+		}
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "main",
+		"BeforePageDisplay": "main",
+		"SkinAfterContent": "main",
+		"GetPreferences": "main"
+	},
+	"AvailableRights": [
+		"hamichlolads-exempt"
+	],
+	"GroupPermissions": {
+		"sysop": { "hamichlolads-exempt": true },
+		"bureaucrat": { "hamichlolads-exempt": true },
+		"interface-admin": { "hamichlolads-exempt": true },
+		"suppress": { "hamichlolads-exempt": true },
+		"checkuser": { "hamichlolads-exempt": true },
+		"temporary-account-viewer": { "hamichlolads-exempt": true },
+		"technicalteam": { "hamichlolads-exempt": true },
+		"editinterface": { "hamichlolads-exempt": true },
+		"patroller": { "hamichlolads-exempt": true },
+		"autopatroller": { "hamichlolads-exempt": true },
+		"wikimport": { "hamichlolads-exempt": true },
+		"wikiupdate": { "hamichlolads-exempt": true },
+		"מייבא": { "hamichlolads-exempt": true },
+		"XML": { "hamichlolads-exempt": true },
+		"aspaklaryaEditor": { "hamichlolads-exempt": true },
+		"aspaklarya2": { "hamichlolads-exempt": true },
+		"spiritualCommittee": { "hamichlolads-exempt": true },
+		"חסינים": { "hamichlolads-exempt": true },
+		"push-subscription-manager": { "hamichlolads-exempt": true },
+		"bot": { "hamichlolads-exempt": true },
+		"technicalbot": { "hamichlolads-exempt": true },
+		"flow-bot": { "hamichlolads-exempt": true }
+	},
+	"DefaultUserOptions": {
+		"hamichlolads-show": 0
+	},
+	"ResourceModules": {
+		"ext.hamichlolAds": {
+			"localBasePath": "resources",
+			"remoteExtPath": "HamichlolAds/resources",
+			"packageFiles": [
+				"ext.hamichlolAds.js",
+				{
+					"name": "config.json",
+					"config": {
+						"units": "HamichlolAdsUnits",
+						"slots": "HamichlolAdsSlots",
+						"articleAuto": "HamichlolAdsArticleAuto",
+						"endmatter": "HamichlolAdsEndmatterHeadings"
+					}
+				}
+			],
+			"styles": [
+				"ext.hamichlolAds.less"
+			]
+		}
+	},
+	"config": {
+		"HamichlolAdsEnabled": {
+			"description": "Master switch. false removes all ads and the preference.",
+			"value": false
+		},
+		"HamichlolAdsPublisherId": {
+			"description": "Taboola publisher ID.",
+			"value": "hamichlol-site"
+		},
+		"HamichlolAdsHideOnShabbat": {
+			"description": "Hide all ads on Shabbat and holidays. Requires the global $sunset object of Hamichlol's Shabbat lock.",
+			"value": false
+		},
+		"HamichlolAdsExcludeCategory": {
+			"description": "Pages in this category (name without the namespace prefix) get no ads. An empty string disables the check.",
+			"value": "דפים ללא פרסומות"
+		},
+		"HamichlolAdsUnits": {
+			"description": "Taboola units. '$' in container/placement is replaced by the unit's running number on the page. minWidth (px): the narrowest room beside floats (an infobox or images) in which an automatic slot of this unit may be shown, when it cannot move below them. narrow: {unit, below}: the unit to use instead in a room beside floats narrower than below (px), if it is not used elsewhere on the page.",
+			"value": {
+				"feed": {
+					"mode": "thumbnails-b",
+					"container": "below-page-thumbnails",
+					"placement": "Below Page Thumbnails"
+				},
+				"3x1": {
+					"mode": "thumbnails-3x1",
+					"container": "mid-page-thumbnails",
+					"placement": "Mid Page Thumbnails",
+					"minWidth": 360
+				},
+				"6x1": {
+					"mode": "thumbnails-6x1",
+					"container": "mid-page-big-thumbnails-$",
+					"placement": "Mid Page Big Thumbnails $",
+					"minWidth": 500,
+					"narrow": {
+						"unit": "3x1",
+						"below": 700
+					}
+				},
+				"2x1": {
+					"mode": "thumbnails-2x1",
+					"container": "mid-page-small-thumbnails",
+					"placement": "Mid Page Small Thumbnails",
+					"minWidth": 200
+				},
+				"stream": {
+					"mode": "thumbnails-stream-1x1",
+					"container": "mid-page-stream-$",
+					"placement": "Mid Page Stream $"
+				}
+			},
+			"merge_strategy": "provide_default"
+		},
+		"HamichlolAdsSlots": {
+			"description": "Slot name (as used in <adslot name=...> and in the automatic rules) => unit per platform. A slot with no unit for a platform is removed there.",
+			"value": {
+				"home-mid": {
+					"desktop": "3x1"
+				},
+				"home-stream": {
+					"mobile": "stream"
+				},
+				"portal-mid": {
+					"desktop": "6x1",
+					"mobile": "stream"
+				},
+				"article-mid": {
+					"desktop": "6x1",
+					"mobile": "2x1"
+				},
+				"feed": {
+					"desktop": "feed",
+					"mobile": "feed"
+				}
+			},
+			"merge_strategy": "provide_default"
+		},
+		"HamichlolAdsArticleAuto": {
+			"description": "Automatic slots in articles that have no manual <adslot>. Positions: after-intro, after-section-1, before-endmatter.",
+			"value": {
+				"desktop": [
+					{
+						"slot": "article-mid",
+						"position": "after-section-1",
+						"minSections": 3
+					},
+					{
+						"slot": "article-mid",
+						"position": "before-endmatter",
+						"minSections": 5
+					}
+				],
+				"mobile": [
+					{
+						"slot": "article-mid",
+						"position": "after-intro",
+						"minSections": 2
+					}
+				]
+			},
+			"merge_strategy": "provide_default"
+		},
+		"HamichlolAdsEndmatterHeadings": {
+			"description": "Section titles that start the end matter of an article (the before-endmatter position is placed before the first of them).",
+			"value": [
+				"ראו גם",
+				"לקריאה נוספת",
+				"קישורים חיצוניים",
+				"ביאורים",
+				"הערות שוליים"
+			]
+		}
+	},
+	"manifest_version": 2
+}

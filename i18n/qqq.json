@@ -1,0 +1,15 @@
+{
+	"@metadata": {
+		"authors": [
+			"Hamichlol"
+		]
+	},
+	"hamichlolads-desc": "{{desc|name=HamichlolAds|url=https://www.hamichlol.org.il}}",
+	"right-hamichlolads-exempt": "{{doc-right|hamichlolads-exempt}}\nUsers with this right see no ads unless they check {{msg-mw|hamichlolads-pref-show}} in their preferences.",
+	"action-hamichlolads-exempt": "{{doc-action|hamichlolads-exempt}}",
+	"prefs-hamichlolads": "Section header in the Appearance tab of [[Special:Preferences]].",
+	"hamichlolads-pref-show": "Checkbox label in [[Special:Preferences]], shown only to users with the hamichlolads-exempt right.",
+	"hamichlolads-pref-show-help": "Help text under {{msg-mw|hamichlolads-pref-show}}.",
+	"hamichlolads-policy": "Tooltip and accessible name of the info icon on the ads feed, which links to {{msg-mw|hamichlolads-policypage}}.",
+	"hamichlolads-policypage": "{{notranslate}}\nName of the page that the info icon on the ads feed links to. Set to \"-\" to remove the icon."
+}
