@@ -147,7 +147,7 @@ class HookHandler implements
 		}
 
 		$noAdsCategory = $this->config->get( 'HamichlolAdsExcludeCategory' );
-		if ( $noAdsCategory !== '' && is_array( $noAdsCategory )&& in_array( $noAdsCategory, $out->getCategories(), true ) ) {
+		if ( $noAdsCategory !== ''  && in_array( $noAdsCategory, $out->getCategories(), true ) ) {
 			return null;
 		}
 
