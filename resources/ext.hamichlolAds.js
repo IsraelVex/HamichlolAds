@@ -190,16 +190,109 @@ function isUsable( slot ) {
 }
 
 /**
- * Hands every usable slot to Taboola, and removes the rest.
+ * The column of a slot: the child of `ancestor` that contains it.
+ *
+ * @param {HTMLElement} ancestor
+ * @param {HTMLElement} slot
+ * @return {HTMLElement}
  */
-function fillSlots() {
-	const usedUnits = {};
-	let filled = false;
+function columnOf( ancestor, slot ) {
+	let node = slot;
+	while ( node.parentElement !== ancestor ) {
+		node = node.parentElement;
+	}
+	return node;
+}
+
+/**
+ * Whether the boxes are side by side: no two of them overlap horizontally.
+ *
+ * @param {DOMRect[]} rects
+ * @return {boolean}
+ */
+function sideBySide( rects ) {
+	for ( let i = 0; i < rects.length; i++ ) {
+		for ( let j = i + 1; j < rects.length; j++ ) {
+			if ( rects[ i ].right > rects[ j ].left + 1 && rects[ j ].right > rects[ i ].left + 1 ) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+/**
+ * Of the given places of one slot, the one to keep. Editors may place a slot whose unit is used
+ * once per page in several columns (for example, one in each column of the main page): it is
+ * kept in the shortest column, which evens out the columns. The columns are the children of the
+ * slots' nearest common ancestor; if they are not side by side (for example, stacked in a narrow
+ * window), the first place is kept.
+ *
+ * @param {HTMLElement[]} places Usable slots with the same name, in document order
+ * @return {HTMLElement}
+ */
+function pickPlace( places ) {
+	let ancestor = places[ 0 ].parentElement;
+	while ( !places.every( ( slot ) => ancestor.contains( slot ) ) ) {
+		ancestor = ancestor.parentElement;
+	}
+	const columns = places.map( ( slot ) => columnOf( ancestor, slot ) );
+	const rects = columns.map( ( column ) => column.getBoundingClientRect() );
+	// Two places in one column, or columns one above the other: keep the first place.
+	if ( columns.some( ( column, i ) => columns.indexOf( column ) !== i ) || !sideBySide( rects ) ) {
+		return places[ 0 ];
+	}
+	let best = 0;
+	rects.forEach( ( rect, i ) => {
+		if ( rect.height < rects[ best ].height ) {
+			best = i;
+		}
+	} );
+	return places[ best ];
+}
+
+/**
+ * The usable slots on the page, in document order. The rest are removed, and so are the extra
+ * places of a slot whose unit is used once per page (see pickPlace).
+ *
+ * @return {HTMLElement[]}
+ */
+function usableSlots() {
+	const slots = [];
+	// Places of one slot: same name and same unit (fitToFloats may give an automatic slot a narrow unit).
+	const placesByKey = {};
 	for ( const slot of document.querySelectorAll( '.hm-ad-slot' ) ) {
 		if ( !isUsable( slot ) ) {
 			slot.remove();
 			continue;
 		}
+		slots.push( slot );
+		const key = slot.dataset.slot + '|' + unitNameOf( slot );
+		placesByKey[ key ] = placesByKey[ key ] || [];
+		placesByKey[ key ].push( slot );
+	}
+	for ( const key in placesByKey ) {
+		const places = placesByKey[ key ];
+		if ( places.length > 1 && !config.units[ unitNameOf( places[ 0 ] ) ].container.includes( '$' ) ) {
+			const keep = pickPlace( places );
+			places.forEach( ( slot ) => {
+				if ( slot !== keep ) {
+					slots.splice( slots.indexOf( slot ), 1 );
+					slot.remove();
+				}
+			} );
+		}
+	}
+	return slots;
+}
+
+/**
+ * Hands every usable slot to Taboola, and removes the rest.
+ */
+function fillSlots() {
+	const usedUnits = {};
+	let filled = false;
+	for ( const slot of usableSlots() ) {
 		const unitName = unitNameOf( slot );
 		const unit = config.units[ unitName ];
 		// Taboola needs a unique placement on the page: a unit with '$' is numbered, any other is used once.

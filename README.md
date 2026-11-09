@@ -84,7 +84,7 @@ Default slots:
 
 | Slot | Desktop | Mobile | Placement |
 |---|---|---|---|
-| `home-mid` | `3x1` | — | Main page, desktop column |
+| `home-mid` | `3x1` | — | Main page, desktop columns (the shorter one) |
 | `home-stream` | — | `stream` | Main page, mobile column |
 | `portal-mid` | `6x1` | `stream` | Portals |
 | `article-mid` | `6x1` | `2x1` | Articles (automatic) |
@@ -101,6 +101,16 @@ Default automatic slots in articles, counted by top-level (`==`) sections:
 Taboola requires each placement to be unique on a page. A unit whose `container` contains `$` is
 numbered (`Mid Page Big Thumbnails 1`, `2`, …). Any other unit is used once per page; a second slot
 with the same unit is removed and a warning is logged to the browser console.
+
+**One slot, several places.** A slot whose unit is used once per page may be placed in several
+columns, for example `home-mid` in each of the main page's two desktop columns. The slot is then
+shown in only one of them: the shortest column at the time the page loads, which evens out the
+columns (the content of the columns changes daily, and their heights depend on the window width).
+The columns are the children of the places' nearest common ancestor. If they are not side by side
+(for example, stacked in a narrow window), or two places are in the same column, the first place
+is used. The other places are removed before Taboola is called. With an earlier version of this
+extension, the first place is always used, so the extra places can be added to the wiki before or
+after the upgrade.
 
 ## User rights and preferences
 
@@ -153,8 +163,8 @@ rather than repeated in every page.
   ```
 - **Category** `קטגוריה:דפים ללא פרסומות`, marked with `__HIDDENCAT__`.
 - **Ads policy page** `המכלול:מדיניות הפרסומות`, linked from the feed.
-- **Slots** on the main page (`{{משבצת פרסומת|home-mid}}`, `{{משבצת פרסומת|home-stream}}`) and on portals
-  (`{{משבצת פרסומת|portal-mid}}`).
+- **Slots** on the main page (`{{משבצת פרסומת|home-mid}}` in each desktop column,
+  `{{משבצת פרסומת|home-stream}}` in the mobile column) and on portals (`{{משבצת פרסומת|portal-mid}}`).
 
 To keep a single page free of ads, add it to the exclude category. To remove all ads, set
 `$wgHamichlolAdsEnabled = false;`.
